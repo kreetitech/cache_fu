@@ -60,7 +60,6 @@ module ActsAsCached
       SESSION_CACHE.servers = Array(config[:session_servers]) if config[:session_servers]
 
       setup_session_store   if config[:sessions]
-      setup_fragment_store! if config[:fragments]
       setup_fast_hash!      if config[:fast_hash]
       setup_fastest_hash!   if config[:fastest_hash]
 
@@ -84,10 +83,6 @@ module ActsAsCached
         :logger => cache.logger,
         :namespace => cache.namespace
       )
-    end
-
-    def setup_fragment_store!
-      ActsAsCached::FragmentCache.setup!
     end
 
     # break compatiblity with non-ruby memcache clients in exchange for speedup.
