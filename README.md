@@ -1,4 +1,4 @@
-== cache_fu
+#cache_fu
 
 A rewrite of acts_as_cached.
 This version is only compatible with rails 3 and above.
@@ -10,15 +10,13 @@ For fragment and page caching use Rails DalliStore as it already provides all th
 
 This gem is very useful for caching in models.
 
-== Changes from acts_as_cached 1
+##Changes from acts_as_cached 1
 
-- You can no longer set a 'ttl' method on a class.  Instead,
-  pass :ttl to acts_as_cached:
-    >> acts_as_cached :ttl => 15.minutes
+* You can no longer set a 'ttl' method on a class. Instead, pass :ttl to acts_as_cached: `acts_as_cached :ttl => 15.minutes`
 
-- The is_cached? method is aliased as cached?
+* The is_cached? method is aliased as cached?
 
-- set_cache on an instance can take a ttl
-    >> @story.set_cache(15.days)
+* set_cache on an instance can take a ttl: `@story.set_cache(15.days)`
 
-Surendra Singhi [ ssinghi[at]kreeti[dot]com]
+##Author
+[Surendra Singhi](ssinghi@kreeti.com)
