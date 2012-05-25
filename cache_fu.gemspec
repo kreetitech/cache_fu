@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.email = ['ssinghi@kreeti.com']
 
   s.files = Dir.glob('{lib,test,defaults}/**/*') +
-                        %w(LICENSE README)
+                        %w(LICENSE README.md)
   s.homepage = 'http://github.com/kreetitech/cache_fu'
   s.require_paths = ["lib"]
 
