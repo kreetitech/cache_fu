@@ -24,9 +24,11 @@ module ActsAsCached
   end
 end
 
-ActiveSupport::Notifications.subscribe /cache/ do |*args|
-  event =  ActiveSupport::Notifications::Event.new(*args)
-  ActsAsCached::Benchmarking.benchmark(event)
+if defined?(ActiveSupport::Notifications)
+  ActiveSupport::Notifications.subscribe /cache/ do |*args|
+    event =  ActiveSupport::Notifications::Event.new(*args)
+    ActsAsCached::Benchmarking.benchmark(event)
+  end
 end
 
 module ActsAsCached
