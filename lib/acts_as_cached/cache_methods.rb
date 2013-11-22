@@ -117,7 +117,7 @@ module ActsAsCached
     #  is the same as
     #
     #   def self.cached_find_popular
-    #     get_cache("find_popular:today") { find_popular(:today) }
+    #     get_cache("find_popular/today") { find_popular(:today) }
     #   end
     #
     # If your target method accepts multiple parameters, pass :withs an array.
@@ -127,14 +127,14 @@ module ActsAsCached
     # is the same as
     #
     #   def self.cached_find_popular
-    #     get_cache("find_popular:onetwo") { find_popular(:one, :two) }
+    #     get_cache("find_popular/onetwo") { find_popular(:one, :two) }
     #   end
     def caches(method, options = {})
       if options.keys.include?(:with)
         with = options.delete(:with)
-        get_cache("#{method}:#{with}", options) { send(method, with) }
+        get_cache("#{method}#{cache_key_separator}#{with}", options) { send(method, with) }
       elsif withs = options.delete(:withs)
-        get_cache("#{method}:#{withs}", options) { send(method, *withs) }
+        get_cache("#{method}#{cache_key_separator}#{withs}", options) { send(method, *withs) }
       else
         get_cache(method, options) { send(method) }
       end
@@ -182,7 +182,11 @@ module ActsAsCached
     end
 
     def cache_key(cache_id)
-      [cache_name, cache_config[:version], cache_id].compact.join('/').gsub(' ', '_')[0..(max_key_length - 1)]
+      [cache_name, cache_config[:version], cache_id].compact.join(cache_key_separator).gsub(' ', '_')[0..(max_key_length - 1)]
+    end
+    
+    def cache_key_separator
+      @cache_key_separator ||= ActsAsCached.config[:separator] || "/"
     end
   end
 
@@ -223,16 +227,16 @@ module ActsAsCached
             else
               id.to_s
             end
-      key.nil? ? cid : "#{cid}/#{key}"
+      key.nil? ? cid : "#{cid}#{self.class.cache_key_separator}#{key}"
     end
 
     def caches(method, options = {})
-      key = "#{self.cache_key}/#{method}"
+      key = "#{self.cache_key}#{self.class.cache_key_separator}#{method}"
       if options.keys.include?(:with)
         with = options.delete(:with)
-        self.class.get_cache("#{key}/#{with}", options) { send(method, with) }
+        self.class.get_cache("#{key}#{self.class.cache_key_separator}#{with}", options) { send(method, with) }
       elsif withs = options.delete(:withs)
-        self.class.get_cache("#{key}/#{withs}", options) { send(method, *withs) }
+        self.class.get_cache("#{key}#{self.class.cache_key_separator}#{withs}", options) { send(method, *withs) }
       else
         self.class.get_cache(key, options) { send(method) }
       end
