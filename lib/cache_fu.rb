@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/acts_as_cached/cache_methods'
 require File.dirname(__FILE__) + '/acts_as_cached/benchmarking'
-require File.dirname(__FILE__) + '/acts_as_cached/railtie' if defined?(Rails)
+require File.dirname(__FILE__) + '/acts_as_cached/railtie' if defined?(Rails::Railtie)
 
 module ActsAsCached
   @@config = {}
@@ -35,4 +35,10 @@ module ActsAsCached
       cache_options.replace options.reject { |key,| ActsAsCached.valued_keys.include? key }
     end
   end
+end
+
+# need to require after ActsAsCached.config is defined
+rails_version = defined?(Rails.version) && Rails.version || defined?(Rails::VERSION::STRING) && Rails::VERSION::STRING
+if rails_version && rails_version.to_f < 3
+  require File.dirname(__FILE__) + '/acts_as_cached/rails'
 end

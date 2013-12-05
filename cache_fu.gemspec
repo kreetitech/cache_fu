@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'cache_fu'
-  s.version = '0.2.0'
+  s.version = '0.3.0'
   s.authors = ["Surendra Singhi"]
   s.summary = 'Makes caching easy for ActiveRecord models'
   s.description = "This gem is kreetitech's fork (http://github.com/kreetitech/cache_fu)."
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://github.com/kreetitech/cache_fu'
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency 'rails', '~> 3.0'
+  s.add_runtime_dependency 'rails', '~> 2.3'
 
-  s.add_development_dependency 'rails', '~> 3.0'
+  s.add_development_dependency 'rails', '~> 2.3'
 end
